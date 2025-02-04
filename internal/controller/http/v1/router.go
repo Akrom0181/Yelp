@@ -21,10 +21,9 @@ import (
 
 // NewRouter -.
 // Swagger spec:
-// @title       Go Clean Template API
-// @description This is a sample server Go Clean Template server.
+// @title       Yelp API
+// @description This is a sample server Yelp server.
 // @version     1.0
-// @host        localhost:8080
 // @BasePath    /v1
 // @securityDefinitions.apikey BearerAuth
 // @in header
@@ -76,5 +75,78 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		auth.POST("/register", handlerV1.Register)
 		auth.POST("/verify-email", handlerV1.VerifyEmail)
 		auth.POST("/login", handlerV1.Login)
+	}
+
+	business := v1.Group("/business")
+	{
+		business.POST("/", handlerV1.CreateBusiness)
+		business.GET("/list", handlerV1.GetBusinesses)
+		business.GET("/:id", handlerV1.GetBusiness)
+		business.PUT("/", handlerV1.UpdateBusiness)
+		business.DELETE("/:id", handlerV1.DeleteBusiness)
+	}
+
+	business_cat := v1.Group("/business-category")
+	{
+		business_cat.POST("/", handlerV1.CreateBusinessCategory)
+		business_cat.GET("/list", handlerV1.GetBusinessCategories)
+		business_cat.GET("/:id", handlerV1.GetBusinessCategory)
+		business_cat.PUT("/", handlerV1.UpdateBusinessCategory)
+		business_cat.DELETE("/:id", handlerV1.DeleteBusinessCategory)
+	}
+
+	review := v1.Group("/review")
+	{
+		review.POST("/", handlerV1.CreateReview)
+		review.GET("/list", handlerV1.GetReviews)
+		review.GET("/:id", handlerV1.GetReview)
+		review.PUT("/", handlerV1.UpdateReview)
+		review.DELETE("/:id", handlerV1.DeleteReview)
+	}
+
+	report := v1.Group("/report")
+	{
+		report.POST("/", handlerV1.CreateReport)
+		report.GET("/list", handlerV1.GetReports)
+		report.GET("/:id", handlerV1.GetReport)
+		report.PUT("/", handlerV1.UpdateReport)
+		report.DELETE("/:id", handlerV1.DeleteReport)
+	}
+
+	notification := v1.Group("/notification")
+	{
+		notification.POST("/", handlerV1.CreateNotification)
+		notification.GET("/list", handlerV1.GetNotifications)
+		notification.GET("/:id", handlerV1.GetNotification)
+		notification.PUT("/update-status", handlerV1.UpdateStatusNotification)
+		notification.DELETE("/:id", handlerV1.DeleteNotification)
+		notification.PUT("/:id", handlerV1.UpdateNotification)
+	}
+
+	firebase := v1.Group("/firebase")
+	{
+		firebase.POST("/", handlerV1.UploadFiles)
+		firebase.DELETE("/:id", handlerV1.DeleteFile)
+	}
+
+	event := v1.Group("/event")
+	{
+		event.POST("/", handlerV1.CreateEvent)
+		event.PUT("/", handlerV1.UpdateEvent)
+		event.GET("/list", handlerV1.GetEvents)
+		event.GET("/:id", handlerV1.GetEvent)
+		event.DELETE("/:id", handlerV1.DeleteEvent)
+		event.POST("/add-participant", handlerV1.AddParticipant)
+		event.DELETE("/remove-participant", handlerV1.RemoveParticipant)
+		event.GET("/:id/participants", handlerV1.GetParticipants)
+	}
+
+	bookmark := v1.Group("/bookmark")
+	{
+		bookmark.POST("/", handlerV1.CreateBookmark)
+		bookmark.GET("/list", handlerV1.GetBookmarks)
+		bookmark.GET("/:id", handlerV1.GetBookmark)
+		bookmark.PUT("/", handlerV1.UpdateBookmark)
+		bookmark.DELETE("/:id", handlerV1.DeleteBookmark)
 	}
 }

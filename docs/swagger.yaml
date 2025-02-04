@@ -1,10 +1,198 @@
 basePath: /v1
 definitions:
+  entity.Bookmark:
+    properties:
+      business_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.BookmarksList:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/entity.Bookmark'
+        type: array
+    type: object
+  entity.Business:
+    properties:
+      address:
+        type: string
+      attachments:
+        items:
+          $ref: '#/definitions/entity.BusinessAttachment'
+        type: array
+      category_id:
+        type: string
+      contact_info:
+        $ref: '#/definitions/entity.ContactInfo'
+      created_at:
+        type: string
+      description:
+        type: string
+      hours_of_operation:
+        $ref: '#/definitions/entity.HoursOfOperation'
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        type: string
+      owner_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.BusinessAttachment:
+    properties:
+      content_type:
+        type: string
+      created_at:
+        type: string
+      filepath:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.BusinessCategory:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.BusinessCategoryList:
+    properties:
+      businesses_categories:
+        items:
+          $ref: '#/definitions/entity.BusinessCategory'
+        type: array
+      count:
+        type: integer
+    type: object
+  entity.BusinessList:
+    properties:
+      businesses:
+        items:
+          $ref: '#/definitions/entity.Business'
+        type: array
+      count:
+        type: integer
+    type: object
+  entity.ContactInfo:
+    properties:
+      email:
+        type: string
+      phone:
+        type: string
+      website:
+        type: string
+    type: object
   entity.ErrorResponse:
     properties:
       code:
         type: string
       message:
+        type: string
+    type: object
+  entity.Event:
+    properties:
+      business_id:
+        type: string
+      created_at:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+    type: object
+  entity.EventList:
+    properties:
+      count:
+        type: integer
+      events:
+        items:
+          $ref: '#/definitions/entity.Event'
+        type: array
+    type: object
+  entity.EventParticipant:
+    properties:
+      event_id:
+        type: string
+      id:
+        type: string
+      joined_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.EventParticipantList:
+    properties:
+      count:
+        type: integer
+      participants:
+        items:
+          $ref: '#/definitions/entity.EventUsers'
+        type: array
+    type: object
+  entity.EventUsers:
+    properties:
+      email:
+        type: string
+      event_id:
+        type: string
+      full_name:
+        type: string
+      gender:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      user_role:
+        type: string
+      user_type:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.HoursOfOperation:
+    properties:
+      friday:
+        type: string
+      monday:
+        type: string
+      saturday:
+        type: string
+      sunday:
+        type: string
+      thursday:
+        type: string
+      tuesday:
+        type: string
+      wednesday:
         type: string
     type: object
   entity.LoginRequest:
@@ -18,6 +206,41 @@ definitions:
       username:
         type: string
     type: object
+  entity.MultipleFileUploadResponse:
+    properties:
+      url:
+        items:
+          $ref: '#/definitions/entity.Url'
+        type: array
+    type: object
+  entity.Notification:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      message:
+        type: string
+      owner_id:
+        type: string
+      ownerrole:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.NotificationList:
+    properties:
+      count:
+        type: integer
+      notifications:
+        items:
+          $ref: '#/definitions/entity.Notification'
+        type: array
+    type: object
   entity.RegisterRequest:
     properties:
       email:
@@ -30,6 +253,73 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  entity.Report:
+    properties:
+      business_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      reason:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.ReportList:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/entity.Report'
+        type: array
+    type: object
+  entity.Review:
+    properties:
+      attachment:
+        items:
+          $ref: '#/definitions/entity.ReviewAttachment'
+        type: array
+      business_id:
+        type: string
+      comment:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.ReviewAttachment:
+    properties:
+      content_type:
+        type: string
+      created_at:
+        type: string
+      filepath:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.ReviewList:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/entity.Review'
+        type: array
     type: object
   entity.Session:
     properties:
@@ -66,6 +356,13 @@ definitions:
   entity.SuccessResponse:
     properties:
       message:
+        type: string
+    type: object
+  entity.Url:
+    properties:
+      id:
+        type: string
+      url:
         type: string
     type: object
   entity.User:
@@ -117,11 +414,11 @@ definitions:
       platform:
         type: string
     type: object
-host: localhost:8080
+host: localhost:9090
 info:
   contact: {}
-  description: This is a sample server Go Clean Template server.
-  title: Go Clean Template API
+  description: This is a sample server Yelp server.
+  title: Yelp API
   version: "1.0"
 paths:
   /auth/login:
@@ -223,6 +520,1235 @@ paths:
       summary: Register
       tags:
       - auth
+  /bookmark:
+    post:
+      consumes:
+      - application/json
+      description: Create a new bookmark
+      parameters:
+      - description: Bookmark object
+        in: body
+        name: bookmark
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Bookmark'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Bookmark'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new bookmark
+      tags:
+      - bookmark
+    put:
+      consumes:
+      - application/json
+      description: Update a bookmark
+      parameters:
+      - description: Bookmark object
+        in: body
+        name: bookmark
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Bookmark'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Bookmark'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a bookmark
+      tags:
+      - bookmark
+  /bookmark/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a bookmark
+      parameters:
+      - description: Bookmark ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a bookmark
+      tags:
+      - bookmark
+    get:
+      consumes:
+      - application/json
+      description: Get a bookmark by ID
+      parameters:
+      - description: Bookmark ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Bookmark'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a bookmark by ID
+      tags:
+      - bookmark
+  /bookmark/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of bookmarks
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BookmarksList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of bookmarks
+      tags:
+      - bookmark
+  /business:
+    post:
+      consumes:
+      - application/json
+      description: Create a new business
+      parameters:
+      - description: Business object
+        in: body
+        name: business
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Business'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Business'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new business
+      tags:
+      - business
+    put:
+      consumes:
+      - application/json
+      description: Update a business
+      parameters:
+      - description: Business object
+        in: body
+        name: business
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Business'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Business'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a business
+      tags:
+      - business
+  /business-category:
+    post:
+      consumes:
+      - application/json
+      description: Create a new business-category
+      parameters:
+      - description: BusinessCategory object
+        in: body
+        name: business_category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.BusinessCategory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.BusinessCategory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new business-category
+      tags:
+      - business-category
+    put:
+      consumes:
+      - application/json
+      description: Update a business-category
+      parameters:
+      - description: BusinessCategory object
+        in: body
+        name: business-category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.BusinessCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BusinessCategory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a business-category
+      tags:
+      - business-category
+  /business-category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a business-category
+      parameters:
+      - description: BusinessCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a business-category
+      tags:
+      - business-category
+    get:
+      consumes:
+      - application/json
+      description: Get a business-category by ID
+      parameters:
+      - description: BusinessCategory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Category ID
+        in: path
+        name: category_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BusinessCategory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a business-category by ID
+      tags:
+      - business-category
+  /business-category/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of categories
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BusinessCategoryList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of categories
+      tags:
+      - business-category
+  /business/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a business
+      parameters:
+      - description: Business ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a business
+      tags:
+      - business
+    get:
+      consumes:
+      - application/json
+      description: Get a business by ID
+      parameters:
+      - description: Business ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Business'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a business by ID
+      tags:
+      - business
+  /business/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of users
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BusinessList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of users
+      tags:
+      - business
+  /event:
+    post:
+      consumes:
+      - application/json
+      description: Create an event
+      parameters:
+      - description: Event object
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create an event
+      tags:
+      - event
+    put:
+      consumes:
+      - application/json
+      description: Update an event
+      parameters:
+      - description: Event object
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an event
+      tags:
+      - event
+  /event/:id/participants:
+    get:
+      consumes:
+      - application/json
+      description: Get participants of an event
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: Event ID
+        in: query
+        name: event_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.EventParticipantList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get participants of an event
+      tags:
+      - event
+  /event/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an event
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete an event
+      tags:
+      - event
+    get:
+      consumes:
+      - application/json
+      description: Get an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an event by ID
+      tags:
+      - event
+  /event/add-participant:
+    post:
+      consumes:
+      - application/json
+      description: Add a participant to an event
+      parameters:
+      - description: Participant object
+        in: body
+        name: participant
+        required: true
+        schema:
+          $ref: '#/definitions/entity.EventParticipant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.EventParticipant'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add a participant to an event
+      tags:
+      - event
+  /event/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of events
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: Business ID
+        in: query
+        name: business_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.EventList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of events
+      tags:
+      - event
+  /event/remove-participant:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a participant from an event
+      parameters:
+      - description: Participant object
+        in: body
+        name: participant
+        required: true
+        schema:
+          $ref: '#/definitions/entity.EventParticipant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Remove a participant from an event
+      tags:
+      - event
+  /firebase:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload Multiple Files
+      operationId: upload_multiple_files
+      parameters:
+      - collectionFormat: csv
+        description: File to upload
+        in: formData
+        items:
+          type: file
+        name: file
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Request
+          schema:
+            $ref: '#/definitions/entity.MultipleFileUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upload Multiple Files
+      tags:
+      - Upload File
+  /firebase/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete File
+      operationId: delete_file
+      parameters:
+      - description: ID of the file to delete
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success Request
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete File
+      tags:
+      - Upload File
+  /notification:
+    post:
+      consumes:
+      - application/json
+      description: Create a notification and send an email to user
+      parameters:
+      - description: Notification data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Notification'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Notification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new notification
+      tags:
+      - notification
+    put:
+      consumes:
+      - application/json
+      description: Update a notification
+      parameters:
+      - description: Notification object
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Notification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Notification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a notification
+      tags:
+      - notification
+  /notification/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a notification
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a notification
+      tags:
+      - notification
+    get:
+      consumes:
+      - application/json
+      description: Get a notification by ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Notification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a notification by ID
+      tags:
+      - notification
+  /notification/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of notifications
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: user_id
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.NotificationList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of notifications
+      tags:
+      - notification
+  /notification/status:
+    put:
+      consumes:
+      - application/json
+      description: Update a notification's status
+      parameters:
+      - description: Notification object
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Notification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Notification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a notification status
+      tags:
+      - notification
+  /notification/update-status:
+    put:
+      consumes:
+      - application/json
+      description: Update status notification by ID
+      parameters:
+      - description: Notification object
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Notification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Notification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update status a notification by ID
+      tags:
+      - notification
+  /report:
+    post:
+      consumes:
+      - application/json
+      description: Create a new report
+      parameters:
+      - description: Report object
+        in: body
+        name: report
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Report'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Report'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new report
+      tags:
+      - report
+    put:
+      consumes:
+      - application/json
+      description: Update a report
+      parameters:
+      - description: Report object
+        in: body
+        name: report
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Report'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Report'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a report
+      tags:
+      - report
+  /report/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a report
+      parameters:
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a report
+      tags:
+      - report
+    get:
+      consumes:
+      - application/json
+      description: Get a report by ID
+      parameters:
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Report'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a report by ID
+      tags:
+      - report
+  /report/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of reports
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ReportList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of reports
+      tags:
+      - report
+  /review:
+    post:
+      consumes:
+      - application/json
+      description: Create a new review
+      parameters:
+      - description: Review object
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Review'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Review'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new review
+      tags:
+      - review
+    put:
+      consumes:
+      - application/json
+      description: Update a review
+      parameters:
+      - description: Review object
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Review'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a review
+      tags:
+      - review
+  /review/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a review
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a review
+      tags:
+      - review
+    get:
+      consumes:
+      - application/json
+      description: Get a review by ID
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Review'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a review by ID
+      tags:
+      - review
+  /review/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of users
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ReviewList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of users
+      tags:
+      - review
   /session:
     put:
       consumes:

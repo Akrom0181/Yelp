@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: yelpdb_secret  
       POSTGRES_DB: yelpdb
     ports:
-      - "5435:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

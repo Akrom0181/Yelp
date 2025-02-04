@@ -17,7 +17,7 @@ func GenerateOtpEmailBody(otp string) (string, error) {
 <!DOCTYPE html>
 <html>
 <body>
-    <p>Your Otp to verify your Mini twitter account {{.Code}},</p>
+    <p>Your Otp to verify your YELP account {{.Code}},</p>
 </body>
 </html>
 `
@@ -40,7 +40,7 @@ func GenerateOtpEmailBody(otp string) (string, error) {
 func SendEmail(smtpHost, smtpPort, from, password, to, body string) error {
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
-	msg := []byte(fmt.Sprintf("Subject: Otp code Mini twitter\r\n"+
+	msg := []byte(fmt.Sprintf("Subject: Otp code Yelp\r\n"+
 		"Content-Type: text/html; charset=\"UTF-8\"\r\n"+
 		"From: %s\r\n"+
 		"To: %s\r\n"+
@@ -52,4 +52,28 @@ func SendEmail(smtpHost, smtpPort, from, password, to, body string) error {
 	}
 
 	return nil
+}
+
+func GenerateNotificationEmailBody(message string) (string, error) {
+	templateString := `
+<!DOCTYPE html>
+<html>
+<body>
+    <p>Hello: you have sms: {{.Code}},</p>
+</body>
+</html>
+`
+	tmpl, err := template.New("email").Parse(templateString)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse email template: %w", err)
+	}
+	otpData := Otp{message}
+
+	var builder strings.Builder
+	err = tmpl.Execute(&builder, otpData)
+	if err != nil {
+		return "", fmt.Errorf("failed to execute email template: %w", err)
+	}
+
+	return builder.String(), nil
 }

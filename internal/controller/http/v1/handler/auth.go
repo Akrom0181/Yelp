@@ -48,6 +48,9 @@ func (h *Handler) Login(ctx *gin.Context) {
 	} else if user.UserType == "admin" && body.Platform != "admin" {
 		h.ReturnError(ctx, config.ErrorForbidden, "Admin can only login to admin web", http.StatusBadRequest)
 		return
+	} else if user.UserType == "business_owner" && body.Platform != "business_owner" {
+		h.ReturnError(ctx, config.ErrorForbidden, "Business owner can only login to business owner web", http.StatusBadRequest)
+		return
 	}
 
 	if !hash.CheckPasswordHash(body.Password, user.Password) {

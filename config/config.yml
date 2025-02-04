@@ -1,13 +1,13 @@
 app:
-  name: 'go-clean-template'
+  name: 'yelp'
   version: '1.0.0'
 
 http:
-  port: '8080'
+  port: '9090'
 
 logger:
   log_level: 'debug'
-  rollbar_env: 'go-clean-template'
+  rollbar_env: 'yelp'
 
 postgres:
   pool_max: 2

@@ -6,6 +6,7 @@ CREATE TYPE user_type AS ENUM (
 CREATE TYPE user_role AS ENUM (
   'user',
   'admin',
+  'business_owner',
   'superadmin'
 );
 

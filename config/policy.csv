@@ -7,8 +7,32 @@ p, user, /v1/user/*, PUT|DELETE
 p, user, /v1/user/:id, GET
 p, admin, /v1/user/*, GET|POST|PUT|DELETE
 
+p, user, /v1/business/*, GET
+p, admin, /v1/business/*, GET|POST|PUT|DELETE
+p, business_owner, /v1/business/*, GET|POST|PUT|DELETE
+
+p, user, /v1/business-category/:id, GET
+p, business_owner, /v1/business-category/:id, GET
+p, superadmin, /v1/business-category/*, GET|POST|PUT|DELETE
+
+p, user,  /v1/review/:id, GET
+p, admin, /v1/review/*, GET|POST|PUT|DELETE
+p, business_owner, /v1/review/*, GET|POST|PUT|DELETE
+
+p, user, /v1/notification/*, GET|POST|PUT|DELETE
+p, user, /v1/notification/:id, GET
+p, admin, /v1/notification/*, GET|POST|PUT|DELETE
+
 p, user, /v1/session/*, GET|DELETE
 p, admin, /v1/session/*, GET|POST|PUT|DELETE
 
+p, user, /v1/firebase/*, POST|DELETE
+p, admin, /v1/firebase/*, POST|DELETE
+
+p, user, /v1/event/:id, GET
+p, user, /v1/event/*, GET|POST|PUT|DELETE
+p, admin, /v1/event/*, GET|POST|PUT|DELETE
+
 g, user, unauthorized
 g, admin, user
+g, superadmin, admin
