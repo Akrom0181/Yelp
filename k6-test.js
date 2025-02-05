@@ -3,8 +3,8 @@ import { check, sleep } from 'k6';
 
 export const options = {
     stages: [
-        { duration: "5s", target: 1000 },
-        { duration: "20s", target: 1000 },
+        { duration: "5s", target: 2000 },
+        { duration: "20s", target: 2000 },
         { duration: "5s", target: 0 },
     ],
 };
@@ -42,7 +42,7 @@ export default () => {
 
     let registerParams = {
         headers: {
-            "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybSI6ImFkbWluIiwic2Vzc2lvbl9pZCI6IjMzMjdjZThiLWJhN2UtNGEwZi04MWM5LWVkZWQwOTY2MTQ1NCIsInN1YiI6IjcyY2JlM2ZiLTAyY2QtNGZhMy04YWM0LTU0NDMyMjhmOTc4ZiIsInVzZXJfcm9sZSI6InN1cGVyYWRtaW4iLCJ1c2VyX3R5cGUiOiJhZG1pbiJ9.J9yJXKkYlcHfuFDFEhvDXgKAdBIZlahmfEWgRkgqOXM`,
+            "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybSI6ImFkbWluIiwic2Vzc2lvbl9pZCI6IjQwMzk1MzYwLTNjOWUtNDY4MC05YTEyLTNjY2Y0NGQzNTM5OSIsInN1YiI6IjFkM2NhMGJmLTgzNWUtNDkwYS1iYTBhLTA0MTQ2ZjVkYTA3ZSIsInVzZXJfcm9sZSI6InN1cGVyYWRtaW4iLCJ1c2VyX3R5cGUiOiJhZG1pbiJ9.-Ocd_nZLGvcOcgEsdXS8NVk9qGBCj0JUJ-HeseKzFXg`,
             "Content-Type": "application/json",
         }
     };
@@ -56,11 +56,13 @@ export default () => {
     //     "status code 201": (r) => r.status === 201
     // });
 
-    const resGetSingleUser = http.get(`http://localhost:9090/v1/user/72cbe3fb-02cd-4fa3-8ac4-5443228f978f`, registerParams);
+    const resGetSingleUser = http.get(`http://localhost/v1/user/1d3ca0bf-835e-490a-ba0a-04146f5da07e`, registerParams);
 
     check(resGetSingleUser, {
         "status code 200": (r) => r.status === 200
     });
+
+    sleep(1)
 
     // console.log('Register Response:', resRegister.body);
     // console.log('Get Single User Response:', resGetSingleUser.body);

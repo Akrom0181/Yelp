@@ -1,14 +1,15 @@
-version: '3.8'
-
 services:
   app1:
     build: .
-    container_name: yelp-app1
+    container_name: yelp1
     env_file:
       - .env
-    mem_limit: 512m
-    mem_reservation: 256m
-    cpus: 0.5  
+    mem_limit: 1G
+    mem_reservation: 512m
+    # cpus: 0.5  
+    cpuset: "0"
+    cpu_period: 100000
+    cpu_quota: 50000
     ports:
       - 9091:9090
     networks:
@@ -16,12 +17,15 @@ services:
 
   app2:
     build: .
-    container_name: yelp-app2
+    container_name: yelp2
     env_file:
       - .env
-    mem_limit: 512m
-    mem_reservation: 256m
-    cpus: 0.5  
+    mem_limit: 1G
+    mem_reservation: 512M
+    cpuset: "1"
+    cpu_period: 100000
+    cpu_quota: 50000
+    # cpus: 0.5  
     ports:
       - 9092:9090
     networks:
@@ -29,56 +33,38 @@ services:
 
   app3:
     build: .
-    container_name: yelp-app3
+    container_name: yelp3
     env_file:
       - .env
-    mem_limit: 512m
-    mem_reservation: 256m
-    cpus: 0.5  
+    mem_limit: 1G
+    mem_reservation: 512M
+    # cpus: 0.5  
+    cpuset: "2"
+    cpu_period: 100000
+    cpu_quota: 50000
     ports:
       - 9093:9090
     networks:
       - yelp
 
-  app4:
-    build: .
-    container_name: yelp-app4
-    env_file:
-      - .env
-    mem_limit: 512m
-    mem_reservation: 256m
-    cpus: 0.5  
-    ports:
-      - 9094:9090
-    networks:
-      - yelp
-
-  app5:
-    build: .
-    container_name: yelp-app5
-    env_file:
-      - .env
-    mem_limit: 512m
-    mem_reservation: 256m
-    cpus: 0.5  
-    ports:
-      - 9095:9090
-    networks:
-      - yelp
-
   nginx:
     image: nginx:latest
-    container_name: nginx-load-balancer
-    ports:
-      - 80:80
+    container_name: yelp-nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - app1
+      - app2
+      - app3
     networks:
       - yelp
 
 networks:
-  yelp: 
+  yelp:
     driver: bridge
+
 
 
 
