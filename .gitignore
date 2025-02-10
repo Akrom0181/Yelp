@@ -4,7 +4,7 @@
 
 # Config
 .env
-serviceAccountKey.json
+# serviceAccountKey.json
 
 # Binaries for programs and plugins
 *.exe

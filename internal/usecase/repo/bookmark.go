@@ -29,14 +29,14 @@ func NewBookmarkRepo(pg *postgres.Postgres, config *config.Config, logger *logge
 func (r *BookmarkRepo) Create(ctx context.Context, req entity.Bookmark) (entity.Bookmark, error) {
 	req.ID = uuid.NewString()
 
-	qeury, args, err := r.pg.Builder.Insert("bookmarks").
+	query, args, err := r.pg.Builder.Insert("bookmarks").
 		Columns(`id, user_id, business_id`).
 		Values(req.ID, req.UserID, req.BusinessID).ToSql()
 	if err != nil {
 		return entity.Bookmark{}, err
 	}
 
-	_, err = r.pg.Pool.Exec(ctx, qeury, args...)
+	_, err = r.pg.Pool.Exec(ctx, query, args...)
 	if err != nil {
 		return entity.Bookmark{}, err
 	}
@@ -50,16 +50,16 @@ func (r *BookmarkRepo) GetSingle(ctx context.Context, req entity.Id) (entity.Boo
 		createdAt, updatedAt time.Time
 	)
 
-	qeuryBuilder := r.pg.Builder.
+	queryBuilder := r.pg.Builder.
 		Select(`id, user_id, business_id, created_at, updated_at`).
 		From("bookmarks").Where("id = ?", req.ID)
 
-	qeury, args, err := qeuryBuilder.ToSql()
+	query, args, err := queryBuilder.ToSql()
 	if err != nil {
 		return entity.Bookmark{}, err
 	}
 
-	err = r.pg.Pool.QueryRow(ctx, qeury, args...).
+	err = r.pg.Pool.QueryRow(ctx, query, args...).
 		Scan(&response.ID, &response.UserID, &response.BusinessID, &createdAt, &updatedAt)
 	if err != nil {
 		return entity.Bookmark{}, err
@@ -77,18 +77,18 @@ func (r *BookmarkRepo) GetList(ctx context.Context, req entity.GetListFilter) (e
 		createdAt, updatedAt time.Time
 	)
 
-	qeuryBuilder := r.pg.Builder.
+	queryBuilder := r.pg.Builder.
 		Select(`id, user_id, business_id, created_at, updated_at`).
 		From("bookmarks")
 
-	qeuryBuilder, where := PrepareGetListQuery(qeuryBuilder, req)
+	queryBuilder, where := PrepareGetListQuery(queryBuilder, req)
 
-	qeury, args, err := qeuryBuilder.ToSql()
+	query, args, err := queryBuilder.ToSql()
 	if err != nil {
 		return response, err
 	}
 
-	rows, err := r.pg.Pool.Query(ctx, qeury, args...)
+	rows, err := r.pg.Pool.Query(ctx, query, args...)
 	if err != nil {
 		return response, err
 	}
@@ -126,12 +126,12 @@ func (r *BookmarkRepo) Update(ctx context.Context, req entity.Bookmark) (entity.
 		"updated_at":  "now()",
 	}
 
-	qeury, args, err := r.pg.Builder.Update("bookmarks").SetMap(mp).Where("id = ?", req.ID).ToSql()
+	query, args, err := r.pg.Builder.Update("bookmarks").SetMap(mp).Where("id = ?", req.ID).ToSql()
 	if err != nil {
 		return entity.Bookmark{}, err
 	}
 
-	_, err = r.pg.Pool.Exec(ctx, qeury, args...)
+	_, err = r.pg.Pool.Exec(ctx, query, args...)
 	if err != nil {
 		return entity.Bookmark{}, err
 	}
@@ -140,12 +140,12 @@ func (r *BookmarkRepo) Update(ctx context.Context, req entity.Bookmark) (entity.
 }
 
 func (r *BookmarkRepo) Delete(ctx context.Context, req entity.Id) error {
-	qeury, args, err := r.pg.Builder.Delete("bookmarks").Where("id = ?", req.ID).ToSql()
+	query, args, err := r.pg.Builder.Delete("bookmarks").Where("id = ?", req.ID).ToSql()
 	if err != nil {
 		return err
 	}
 
-	_, err = r.pg.Pool.Exec(ctx, qeury, args...)
+	_, err = r.pg.Pool.Exec(ctx, query, args...)
 	if err != nil {
 		return err
 	}
@@ -161,12 +161,12 @@ func (r *BookmarkRepo) UpdateField(ctx context.Context, req entity.UpdateFieldRe
 		mp[item.Column] = item.Value
 	}
 
-	qeury, args, err := r.pg.Builder.Update("bookmarks").SetMap(mp).Where(PrepareFilter(req.Filter)).ToSql()
+	query, args, err := r.pg.Builder.Update("bookmarks").SetMap(mp).Where(PrepareFilter(req.Filter)).ToSql()
 	if err != nil {
 		return response, err
 	}
 
-	n, err := r.pg.Pool.Exec(ctx, qeury, args...)
+	n, err := r.pg.Pool.Exec(ctx, query, args...)
 	if err != nil {
 		return response, err
 	}

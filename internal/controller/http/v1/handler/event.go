@@ -24,7 +24,7 @@ import (
 func (h *Handler) CreateEvent(ctx *gin.Context) {
 	var req entity.Event
 
-	if ctx.GetHeader("user_role") != "business_owner" || ctx.GetHeader("user_type") != "admin" {
+	if ctx.GetHeader("user_role") != "business_owner" {
 		ctx.JSON(404, gin.H{"error": "Only businessmen can create an event"})
 		return
 	}

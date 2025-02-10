@@ -56,6 +56,7 @@ type (
 		GetSingle(ctx context.Context, req entity.Id) (entity.BusinessAttachment, error)
 		GetList(ctx context.Context, req entity.GetListFilter) (entity.BusinessAttachmentList, error)
 		Delete(ctx context.Context, req entity.Id) error
+		Update(ctx context.Context, req entity.BusinessAttachment) (entity.BusinessAttachment, error)
 	}
 
 	// ReviewRepo -.
@@ -107,11 +108,43 @@ type (
 		GetParticipants(ctx context.Context, req entity.GetListFilter) (entity.EventParticipantList, error)
 	}
 
+	// BookmarkRepo -.
 	BookmarkRepoI interface {
 		Create(ctx context.Context, req entity.Bookmark) (entity.Bookmark, error)
 		GetSingle(ctx context.Context, req entity.Id) (entity.Bookmark, error)
 		GetList(ctx context.Context, req entity.GetListFilter) (entity.BookmarksList, error)
 		Update(ctx context.Context, req entity.Bookmark) (entity.Bookmark, error)
 		Delete(ctx context.Context, req entity.Id) error
+	}
+
+	// PromotionRepo -.
+	PromotionRepoI interface {
+		Create(ctx context.Context, req entity.Promotion) (entity.Promotion, error)
+		GetList(ctx context.Context, req entity.GetListFilter) (entity.PromotionGetList, error)
+		GetSingle(ctx context.Context, req entity.PromotionSingleRequest) (entity.Promotion, error)
+		Delete(ctx context.Context, req entity.Id) error
+	}
+
+	TagRepoI interface {
+		Create(ctx context.Context, req entity.Tag) (entity.Tag, error)
+		GetSingle(ctx context.Context, req entity.Id) (entity.Tag, error)
+		GetList(ctx context.Context, req entity.GetListFilter) (entity.TagList, error)
+		Update(ctx context.Context, req entity.Tag) (entity.Tag, error)
+		Delete(ctx context.Context, req entity.Id) error
+		UpdateField(ctx context.Context, req entity.UpdateFieldRequest) (entity.RowsEffected, error)
+		GetDefaultTags(ctx context.Context) ([]string, error)
+	}
+
+	// UserTagRepo -.
+	UserTagRepoI interface {
+		Create(ctx context.Context, req entity.UserTag) (entity.UserTag, error)
+		Delete(ctx context.Context, req entity.Id) error
+		GetList(ctx context.Context, req entity.GetListFilter) (entity.UserTagList, error)
+	}
+
+	// FollowerRepo -.
+	FollowerRepoI interface {
+		UpsertOrRemove(ctx context.Context, req entity.Follower) (entity.Follower, error)
+		GetList(ctx context.Context, req entity.GetListFilter) (entity.UserList, error)
 	}
 )

@@ -6,7 +6,6 @@ services:
       - .env
     mem_limit: 1G
     mem_reservation: 512m
-    # cpus: 0.5  
     cpuset: "0"
     cpu_period: 100000
     cpu_quota: 50000
@@ -25,7 +24,6 @@ services:
     cpuset: "1"
     cpu_period: 100000
     cpu_quota: 50000
-    # cpus: 0.5  
     ports:
       - 9092:9090
     networks:
@@ -38,7 +36,6 @@ services:
       - .env
     mem_limit: 1G
     mem_reservation: 512M
-    # cpus: 0.5  
     cpuset: "2"
     cpu_period: 100000
     cpu_quota: 50000
@@ -63,10 +60,7 @@ services:
 
 networks:
   yelp:
-    driver: bridge
-
-
-
+    external: true
 
 
 

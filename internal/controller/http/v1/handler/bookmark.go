@@ -66,7 +66,7 @@ func (h *Handler) GetBookmark(ctx *gin.Context) {
 	ctx.JSON(200, bookmark)
 }
 
-// GetUsers godoc
+// GetBookmarks godoc
 // @Router /bookmark/list [get]
 // @Summary Get a list of bookmarks
 // @Description Get a list of bookmarks
@@ -76,7 +76,7 @@ func (h *Handler) GetBookmark(ctx *gin.Context) {
 // @Produce  json
 // @Param page query number true "page"
 // @Param limit query number true "limit"
-// @Param search query string false "search"
+// @Param search query string true "search"
 // @Success 200 {object} entity.BookmarksList
 // @Failure 400 {object} entity.ErrorResponse
 func (h *Handler) GetBookmarks(ctx *gin.Context) {
@@ -93,7 +93,7 @@ func (h *Handler) GetBookmarks(ctx *gin.Context) {
 	req.Filters = append(req.Filters,
 		entity.Filter{
 			Column: "business_id",
-			Type:   "search",
+			Type:   "eq",
 			Value:  search,
 		},
 	)
@@ -103,12 +103,12 @@ func (h *Handler) GetBookmarks(ctx *gin.Context) {
 		Order:  "desc",
 	})
 
-	users, err := h.UseCase.BookmarkRepo.GetList(ctx, req)
+	bookmarks, err := h.UseCase.BookmarkRepo.GetList(ctx, req)
 	if h.HandleDbError(ctx, err, "Error getting bookmarks") {
 		return
 	}
 
-	ctx.JSON(200, users)
+	ctx.JSON(200, bookmarks)
 }
 
 // UpdateBookmark godoc

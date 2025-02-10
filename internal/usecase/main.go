@@ -20,6 +20,10 @@ type UseCase struct {
 	ReportRepo             ReportRepoI
 	NotificationRepo       NotificationRepoI
 	EventRepo              EventRepoI
+	PromotionRepo          PromotionRepoI
+	UserTagRepo            UserTagRepoI
+	FollowerRepo           FollowerRepoI
+	TagRepo                TagRepoI
 }
 
 // New -.
@@ -36,5 +40,9 @@ func New(pg *postgres.Postgres, config *config.Config, logger *logger.Logger) *U
 		ReportRepo:             repo.NewReportRepo(pg, config, logger),
 		NotificationRepo:       repo.NewNotificationRepo(pg, config, logger),
 		EventRepo:              repo.NewEventRepo(pg, config, logger),
+		PromotionRepo:          repo.NewPromotionRepo(pg, config, logger),
+		UserTagRepo:            repo.NewUserTagRepo(pg, config, logger),
+		FollowerRepo:           repo.NewFollowerRepo(pg, config, logger),
+		TagRepo:                repo.NewTagRepo(pg, config, logger),
 	}
 }

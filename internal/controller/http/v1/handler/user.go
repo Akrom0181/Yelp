@@ -5,6 +5,7 @@ import (
 
 	"github.com/Akorm0181/yelp/config"
 	"github.com/Akorm0181/yelp/internal/entity"
+	"github.com/Akorm0181/yelp/pkg/firebase"
 	"github.com/Akorm0181/yelp/pkg/hash"
 	"github.com/gin-gonic/gin"
 )
@@ -200,4 +201,62 @@ func (h *Handler) DeleteUser(ctx *gin.Context) {
 	ctx.JSON(200, entity.SuccessResponse{
 		Message: "User deleted successfully",
 	})
+}
+
+// UploadProfilePic godoc
+// @ID upload_profile_pic_file
+// @Router /user/upload [post]
+// @Summary Upload Multiple Files
+// @Description Upload Multiple Files
+// @Security BearerAuth
+// @Tags user
+// @Accept multipart/form-data
+// @Produce json
+// @Param file formData []file true "File to upload"
+// @Success 200 {object} entity.MultipleFileUploadResponse "Success Request"
+// @Failure 400 {object} entity.ErrorResponse "Bad Request"
+// @Failure 500 {object} entity.ErrorResponse "Server error"
+func (h *Handler) UploadProfilePic(ctx *gin.Context) {
+	var (
+		id entity.UserSingleRequest
+	)
+
+	form, err := ctx.MultipartForm()
+	if err != nil {
+		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid file upload request", 400)
+		return
+	}
+
+	if ctx.GetHeader("user_type") == "user" || ctx.GetHeader("user_type") == "admin" {
+		id.ID = ctx.GetHeader("sub")
+	}
+
+	user, err := h.UseCase.UserRepo.GetSingle(ctx, id)
+	if h.HandleDbError(ctx, err, "Error getting user") {
+		return
+	}
+
+	resp, err := firebase.UploadFiles(form)
+	if h.HandleDbError(ctx, err, "Error uploading files") {
+		return
+	}
+
+	_, err = h.UseCase.UserRepo.Update(ctx, entity.User{
+		ID:         id.ID,
+		FullName:   user.FullName,
+		UserName:   user.UserName,
+		Email:      user.Email,
+		Gender:     user.Gender,
+		ProfilePic: resp.Url[0].Url,
+		Bio:        user.Bio,
+		Status:     user.Status,
+		UserType:   user.UserType,
+		UserRole:   user.UserRole,
+	})
+
+	if h.HandleDbError(ctx, err, "Error updating user") {
+		return
+	}
+
+	ctx.JSON(200, resp)
 }

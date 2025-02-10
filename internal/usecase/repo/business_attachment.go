@@ -249,3 +249,22 @@ func (r *BusinessAttachmentRepo) Delete(ctx context.Context, req entity.Id) erro
 
 	return nil
 }
+
+func (r *BusinessAttachmentRepo) Update(ctx context.Context, req entity.BusinessAttachment) (entity.BusinessAttachment, error) {
+	mp := map[string]interface{}{
+		"filepath":   req.FilePath,
+		"updated_at": "now()",
+	}
+
+	qeury, args, err := r.pg.Builder.Update("business_attachment").SetMap(mp).Where("id = ?", req.Id).ToSql()
+	if err != nil {
+		return entity.BusinessAttachment{}, err
+	}
+
+	_, err = r.pg.Pool.Exec(ctx, qeury, args...)
+	if err != nil {
+		return entity.BusinessAttachment{}, err
+	}
+
+	return req, nil
+}

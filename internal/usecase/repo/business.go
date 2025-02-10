@@ -121,27 +121,41 @@ func (r *BusinessRepo) GetList(ctx context.Context, req entity.GetListFilter) (e
 		latitude, longitude                        sql.NullFloat64
 	)
 
-	qeuryBuilder := r.pg.Builder.
-		Select(`id, name, description, category_id, address, latitude, longitude, contact_info, hours_of_operation, owner_id, created_at, updated_at`).
-		From("businesses")
+	// Fully qualify column names to avoid ambiguity
+	queryBuilder := r.pg.Builder.
+		Select(`
+			b.id AS business_id, b.name, b.description, b.category_id, b.address, 
+			b.latitude, b.longitude, b.contact_info, b.hours_of_operation, 
+			b.owner_id, b.created_at, b.updated_at, 
+			COALESCE(JSON_AGG(ba) FILTER (WHERE ba.id IS NOT NULL), '[]') AS attachments
+		`).
+		From("businesses b").
+		LeftJoin("business_attachment AS ba ON b.id = ba.business_id")
 
-	qeuryBuilder, where := PrepareGetListQuery(qeuryBuilder, req)
+	queryBuilder, where := PrepareGetListQuery(queryBuilder, req)
 
-	qeury, args, err := qeuryBuilder.ToSql()
+	query, args, err := queryBuilder.GroupBy("b.id").ToSql() // Group by business ID for proper aggregation
 	if err != nil {
 		return response, err
 	}
 
-	rows, err := r.pg.Pool.Query(ctx, qeury, args...)
+	rows, err := r.pg.Pool.Query(ctx, query, args...)
 	if err != nil {
 		return response, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var item entity.Business
-		err = rows.Scan(&item.ID, &item.Name, &description, &item.CategoryID, &item.Address,
-			&latitude, &longitude, &contactInfo, &hoursOfOperation, &item.OwnerID, &createdAt, &updatedAt)
+		var (
+			item           entity.Business
+			attachmentsRaw []byte // To hold the aggregated JSON array of attachments
+		)
+
+		err = rows.Scan(
+			&item.ID, &item.Name, &description, &item.CategoryID, &item.Address,
+			&latitude, &longitude, &contactInfo, &hoursOfOperation,
+			&item.OwnerID, &createdAt, &updatedAt, &attachmentsRaw,
+		)
 		if err != nil {
 			return response, err
 		}
@@ -155,7 +169,6 @@ func (r *BusinessRepo) GetList(ctx context.Context, req entity.GetListFilter) (e
 			item.Longitude = longitude.Float64
 		}
 		if contactInfo.Valid {
-			// JSON to struct (ContactInfo)
 			var contactInfoStruct entity.ContactInfo
 			err := json.Unmarshal([]byte(contactInfo.String), &contactInfoStruct)
 			if err != nil {
@@ -164,7 +177,6 @@ func (r *BusinessRepo) GetList(ctx context.Context, req entity.GetListFilter) (e
 			item.ContactInfo = contactInfoStruct
 		}
 		if hoursOfOperation.Valid {
-			// JSON to struct (HoursOfOperation)
 			var hoursOfOperationStruct entity.HoursOfOperation
 			err := json.Unmarshal([]byte(hoursOfOperation.String), &hoursOfOperationStruct)
 			if err != nil {
@@ -176,10 +188,16 @@ func (r *BusinessRepo) GetList(ctx context.Context, req entity.GetListFilter) (e
 			item.Description = description.String
 		}
 
+		err = json.Unmarshal(attachmentsRaw, &item.Attachments)
+		if err != nil {
+			return response, err
+		}
+
 		response.Items = append(response.Items, item)
 	}
 
-	countQuery, args, err := r.pg.Builder.Select("COUNT(1)").From("businesses").Where(where).ToSql()
+	// Count query
+	countQuery, args, err := r.pg.Builder.Select("COUNT(1)").From("businesses b").Where(where).ToSql()
 	if err != nil {
 		return response, err
 	}

@@ -3,9 +3,11 @@ package handler
 import (
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/Akorm0181/yelp/config"
 	"github.com/Akorm0181/yelp/internal/entity"
+	"github.com/Akorm0181/yelp/pkg/firebase"
 	"github.com/gin-gonic/gin"
 )
 
@@ -99,8 +101,8 @@ func (h *Handler) GetBusiness(ctx *gin.Context) {
 
 // GetBusinesss godoc
 // @Router /business/list [get]
-// @Summary Get a list of users
-// @Description Get a list of users
+// @Summary Get a list of businesses
+// @Description Get a list of businesses
 // @Security BearerAuth
 // @Tags business
 // @Accept  json
@@ -144,12 +146,12 @@ func (h *Handler) GetBusinesses(ctx *gin.Context) {
 		Order:  "desc",
 	})
 
-	users, err := h.UseCase.BusinessRepo.GetList(ctx, req)
-	if h.HandleDbError(ctx, err, "Error getting users") {
+	businesses, err := h.UseCase.BusinessRepo.GetList(ctx, req)
+	if h.HandleDbError(ctx, err, "Error getting businesses") {
 		return
 	}
 
-	ctx.JSON(200, users)
+	ctx.JSON(200, businesses)
 }
 
 // UpdateBusiness godoc
@@ -232,4 +234,51 @@ func (h *Handler) DeleteBusiness(ctx *gin.Context) {
 	ctx.JSON(200, entity.SuccessResponse{
 		Message: "Business deleted successfully",
 	})
+}
+
+// UploadBusinessPic godoc
+// @ID upload_business_pic_file
+// @Router /business/upload/{id} [post]
+// @Summary Upload Multiple Files
+// @Description Upload Multiple Files
+// @Security BearerAuth
+// @Tags business
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path string true "Business attachment id"
+// @Param file formData []file true "File to upload"
+// @Success 200 {object} entity.MultipleFileUploadResponse "Success Request"
+// @Failure 400 {object} entity.ErrorResponse "Bad Request"
+// @Failure 500 {object} entity.ErrorResponse "Server error"
+func (h *Handler) UploadBusinessPic(ctx *gin.Context) {
+	var (
+		param_id = ctx.Param("id")
+	)
+
+	log.Print(param_id)
+
+	form, err := ctx.MultipartForm()
+	if err != nil {
+		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid file upload request", 400)
+		return
+	}
+
+	resp, err := firebase.UploadFiles(form)
+	if h.HandleDbError(ctx, err, "Error uploading files") {
+		return
+	}
+
+	log.Print(resp.Url[0].Url)
+	_, err = h.UseCase.BusinessAttachmentRepo.Update(ctx, entity.BusinessAttachment{
+		Id:        param_id,
+		FilePath:  resp.Url[0].Url,
+		CreatedAt: time.Now().Format(time.RFC3339),
+		UpdatedAt: time.Now().Format(time.RFC3339),
+	})
+
+	if h.HandleDbError(ctx, err, "Error updating business attachments") {
+		return
+	}
+
+	ctx.JSON(200, resp)
 }

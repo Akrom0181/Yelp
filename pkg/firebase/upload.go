@@ -63,7 +63,7 @@ func UploadFiles(file *multipart.Form) (*entity.MultipleFileUploadResponse, erro
 		writer.Close()
 
 		encodedFileName := url.PathEscape(fileName)
-		fileURL := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/ecommece-e1b2e.appspot.com/o/%s?alt=media&token=%s", encodedFileName, id)
+		fileURL := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/food-8ceb4.appspot.com/o/%s?alt=media&token=%s", encodedFileName, id)
 
 		resp.Url = append(resp.Url, &entity.Url{
 			Id:  id,
@@ -135,7 +135,7 @@ func UploadFile(file *os.File) (*entity.MultipleFileUploadResponse, error) {
 	encodedFileName := url.PathEscape(fileName)
 
 	// Generate the public URL
-	fileURL := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/ecommece-e1b2e.appspot.com/o/%s?alt=media&token=%s", encodedFileName, id)
+	fileURL := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/food-8ceb4.appspot.com/o/%s?alt=media&token=%s", encodedFileName, id)
 
 	// Add the URL to the response
 	resp.Url = append(resp.Url, &entity.Url{

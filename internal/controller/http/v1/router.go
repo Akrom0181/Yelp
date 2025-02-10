@@ -59,6 +59,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		user.GET("/:id", handlerV1.GetUser)
 		user.PUT("/", handlerV1.UpdateUser)
 		user.DELETE("/:id", handlerV1.DeleteUser)
+		user.POST("/upload", handlerV1.UploadProfilePic)
 	}
 
 	session := v1.Group("/session")
@@ -84,6 +85,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		business.GET("/:id", handlerV1.GetBusiness)
 		business.PUT("/", handlerV1.UpdateBusiness)
 		business.DELETE("/:id", handlerV1.DeleteBusiness)
+		business.POST("/upload/:id", handlerV1.UploadBusinessPic)
 	}
 
 	business_cat := v1.Group("/business-category")
@@ -148,5 +150,28 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		bookmark.GET("/:id", handlerV1.GetBookmark)
 		bookmark.PUT("/", handlerV1.UpdateBookmark)
 		bookmark.DELETE("/:id", handlerV1.DeleteBookmark)
+	}
+
+	promotion := v1.Group("/promotion")
+	{
+		promotion.POST("/", handlerV1.CreatePromotion)
+		promotion.GET("/list", handlerV1.GetPromotions)
+		promotion.GET("/:id", handlerV1.GetPromotion)
+		promotion.DELETE("/:id", handlerV1.DeletePromotion)
+	}
+
+	tag := v1.Group("/tag")
+	{
+		tag.POST("/", handlerV1.CreateTag)
+		tag.GET("/list", handlerV1.GetTags)
+		tag.GET("/:id", handlerV1.GetTag)
+		tag.PUT("/", handlerV1.UpdateTag)
+		tag.DELETE("/:id", handlerV1.DeleteTag)
+	}
+
+	follower := v1.Group("/follower")
+	{
+		follower.POST("/", handlerV1.FollowUnfollow)
+		follower.GET("/list", handlerV1.GetFollowers)
 	}
 }
