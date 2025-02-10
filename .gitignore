@@ -4,7 +4,7 @@
 
 # Config
 .env
-# serviceAccountKey.json
+serviceAccountKey.json
 
 # Binaries for programs and plugins
 *.exe
@@ -21,4 +21,5 @@ bin/
 *.out
 
 # Dependency directories (remove the comment below to include it)
-vendor/
+vendor/serviceAccountKey.json
+serviceAccountKey.json
