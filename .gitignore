@@ -1,10 +1,15 @@
 # IDE
-.idea
-.vscode
+.idea/
+.vscode/
 
 # Config
 .env
 serviceAccountKey.json
+
+# Logs and Backups
+*.log
+*.bak
+*.swp
 
 # Binaries for programs and plugins
 *.exe
@@ -17,9 +22,25 @@ bin/
 # Test binary, built with `go test -c`
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
+# Go Output
 *.out
+/go.sum
 
-# Dependency directories (remove the comment below to include it)
-vendor/serviceAccountKey.json
-serviceAccountKey.json
+# Vendor directory
+/vendor/
+
+# macOS
+.DS_Store
+
+# Docker
+.env
+docker-compose.override.yml
+.dockerignore
+
+# Kubernetes
+*.kube
+
+# Certificates and Keys
+*.key
+*.crt
+*.pem
